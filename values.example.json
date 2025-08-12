@@ -3,7 +3,7 @@
     "vault": {
         "server": "https://vault.codedesignplus.app",
         "internalHost": "http://vault.vault.svc.cluster.local:8200",
-        "token": "ANGq0*B2acD1n5%F",
+        "token": "",
         "solution": "inventory"
     },
     "env": {
