@@ -1,5 +1,5 @@
 import promptSync from 'prompt-sync';
-import { DeployBase } from '../deploy-base.mjs';
+import DeployBase  from '../deploy-base.mjs';
 
 const prompt = promptSync();
 

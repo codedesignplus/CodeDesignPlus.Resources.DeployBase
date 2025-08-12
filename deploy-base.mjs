@@ -1,6 +1,8 @@
+import fs from 'fs';
+import yaml from 'js-yaml'
 import Util from './util.mjs';
 
-export class DeployBase {
+export default class DeployBase {
 
     constructor(settings) {
         this.settings = settings;

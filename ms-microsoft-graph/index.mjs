@@ -1,13 +1,7 @@
 import promptSync from 'prompt-sync';
-import { DeployBase } from '../deploy-base.mjs';
+import DeployBase  from '../deploy-base.mjs';
 
 const prompt = promptSync();
-
-const settingsMicrosoftGraph = {
-    vault: {
-        transitPassword: prompt("Enter Vault Transit Password:")
-    }
-}
 
 export class Deploy extends DeployBase {
     _name = 'ms-microsoft-graph';
@@ -17,7 +11,11 @@ export class Deploy extends DeployBase {
     }
 
     async init() {
-        console.log(`Initializing deployment for ${this._name}...`);
+        this.settings['microsoftGraph'] = {
+            vault: {
+                transitPassword: prompt("Enter Vault Transit Password:")
+            }
+        }
     }
 
     async deploy() {

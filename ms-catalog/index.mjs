@@ -2,7 +2,7 @@ import fs from 'fs';
 import yaml from 'js-yaml'
 import promptSync from 'prompt-sync';
 import Util from '../util.mjs';
-import { DeployBase } from '../deploy-base.mjs';
+import DeployBase  from '../deploy-base.mjs';
 
 
 export class Deploy extends DeployBase {

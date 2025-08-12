@@ -1,14 +1,7 @@
 import promptSync from 'prompt-sync';
-import { DeployBase } from '../deploy-base.mjs';
+import DeployBase  from '../deploy-base.mjs';
 
 const prompt = promptSync();
-
-const settingsFileStorage = {
-    azureBlob: {
-        accountName: prompt("Enter File Storage Azure Blob Account Name:"),
-        accountKey: prompt("Enter File Storage Azure Blob Account Key:")
-    }
-}
 
 export class Deploy extends DeployBase {
     _name = 'ms-filestorage';
@@ -18,7 +11,12 @@ export class Deploy extends DeployBase {
     }
 
     async init() {
-        console.log(`Initializing deployment for ${this._name}...`);
+        this.settings['fileStorage'] = {
+            azureBlob: {
+                accountName: prompt("Enter File Storage Azure Blob Account Name:"),
+                accountKey: prompt("Enter File Storage Azure Blob Account Key:")
+            }
+        }
     }
 
     async deploy() {

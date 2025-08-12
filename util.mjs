@@ -1,3 +1,6 @@
+import fs from 'fs';
+import yaml from 'js-yaml'
+
 export default class Util {
     static updateEnvironment(data, key, value) {
         if (!data.env) {

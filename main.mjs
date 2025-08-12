@@ -34,12 +34,14 @@ const settings = {
     }
 }
 
-const scripts = fs.globSync("**/**.mjs");
+const scripts = fs.globSync("**/index.mjs");
 
 for (const file of scripts) {
-    const { Deploy } = await import(file);
+    const modulePath = './' + file.replace(/\\/g, '/');
+    const { Deploy } = await import(modulePath);
+
     const deployInstance = new Deploy(settings);
     await deployInstance.init();
-    //await deployInstance.setSettings();
+    await deployInstance.setSettings();
     await deployInstance.deploy();
 }
