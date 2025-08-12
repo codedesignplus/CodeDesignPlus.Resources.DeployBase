@@ -1,0 +1,41 @@
+ms-base:
+  env:
+  - name: RESOURCES__ENABLE
+    value: 'true'
+  - name: RESOURCES__SERVER
+    value: http://ms-services-grpc.inventory.svc.cluster.local:5001
+  - name: SECURITY__VALIDISSUER
+    value: https://devcodedesignplus.ciamlogin.com/dfee7752-2c8a-4171-ad95-62ddc82d6ed8/v2.0/
+  - name: SECURITY__CLIENTID
+    value: 305f759d-d1d2-467b-9eab-4a61389c7329
+  - name: SECURITY__VALIDAUDIENCES__0
+    value: 305f759d-d1d2-467b-9eab-4a61389c7329
+  - name: RABBITMQ__HOST
+    value: rabbitmq-cluster.srv-rabbitmq.svc
+  - name: LOGGER__OTELENDPOINT
+    value: http://inventory-opentelemetry-collector.otel-collector.svc.cluster.local:4317
+  - name: OBSERVABILITY__SERVEROTEL
+    value: http://inventory-opentelemetry-collector.otel-collector.svc.cluster.local:4317
+  vault:
+    server: http://vault.vault.svc.cluster.local:8200
+    solution: inventory
+    token: 
+  virtualService:
+    create: true
+    namespace: istio-ingress
+    hosts:
+    - services.codedesignplus.app
+    gateways:
+    - istio-ingress/istio-inventory-gateway
+    http:
+    - name: ms-modules
+      match:
+      - uri:
+          prefix: /ms-modules/
+      rewrite:
+        uri: /
+      route:
+      - destination:
+          host: ms-modules-rest.inventory.svc.cluster.local
+          port:
+            number: 5000
