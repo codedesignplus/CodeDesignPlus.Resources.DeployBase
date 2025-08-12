@@ -1,5 +1,4 @@
 import fs from 'fs';
-import yaml from 'js-yaml'
 import promptSync from 'prompt-sync';
 
 const prompt = promptSync();

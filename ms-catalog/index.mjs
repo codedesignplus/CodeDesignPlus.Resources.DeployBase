@@ -13,10 +13,10 @@ export class Deploy extends DeployBase {
     }
 
     async init() {
-        console.log(`Initializing deployment for ${this._name}...`);
+        console.log(`1. Initializing deployment for ${this._name}...`);
     }
 
     async deploy() {
-        console.log(`Deploying ${this._name}...`);
+        console.log(`2. Deploying ${this._name}...`);
     }
 }
