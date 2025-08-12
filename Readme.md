@@ -1,31 +1,15 @@
-
 # CodeDesignPlus.Resources.DesployBase
 
-This repository contains the resources and deployment files that support the articles of **Phase 2: Deploying the CodeDesignPlus Ecosystem**. Here you will find the values, commands, and configurations needed to deploy the microservices and resources described in the blog.
+This repository contains the resources and deployment files that support the articles of [**Phase 2: Deploying the CodeDesignPlus Ecosystem**](https://www.codedesignplus.com/blog/ecosistema/1-microservices-and-process/). Here you will find the values, commands, and configurations needed to deploy the microservices and resources described in the blog.
 
-## Purpose
+## Prerequisites
 
-The goal of this project is to centralize the configuration and deployment files (mainly for Helm and Vault) that accompany the Phase 2 articles of the CodeDesignPlus blog, making it easier to reproduce and automate the microservices ecosystem.
+- **Node.js 24**
+- The base infrastructure from **Phase 1** must be ready, following this guide: [Infrastructure Roadmap](https://www.codedesignplus.com/blog/env-dev/2-hoja-ruta/)
 
-## Related Articles
+## Initial Setup
 
-1. [Microservices and deployment process](https://www.codedesignplus.com/blog/ecosistema/1-microservices-and-process/)
-2. [Collecting global secrets](https://www.codedesignplus.com/blog/ecosistema/2-recolectando-secretos-globales/)
-3. [ms-services](https://www.codedesignplus.com/blog/ecosistema/3-ms-services/)
-4. [ms-catalog](https://www.codedesignplus.com/blog/ecosistema/4-ms-catalog/)
-5. [ms-emails](https://www.codedesignplus.com/blog/ecosistema/5-ms-emails/)
-6. [ms-modules](https://www.codedesignplus.com/blog/ecosistema/6-ms-modules/)
-7. [ms-roles](https://www.codedesignplus.com/blog/ecosistema/7-ms-roles/)
-8. [ms-rbac](https://www.codedesignplus.com/blog/ecosistema/8-ms-rbac/)
-9. [ms-locations](https://www.codedesignplus.com/blog/ecosistema/9-ms-locations/)
-10. [ms-filestorage](https://www.codedesignplus.com/blog/ecosistema/10-ms-filestorage/)
-11. [ms-tenant](https://www.codedesignplus.com/blog/ecosistema/11-ms-tenant/)
-12. [ms-payments](https://www.codedesignplus.com/blog/ecosistema/12-ms-payments/)
-13. [ms-users](https://www.codedesignplus.com/blog/ecosistema/13-ms-users/)
-14. [ms-licenses](https://www.codedesignplus.com/blog/ecosistema/14-ms-licenses/)
-15. [ms-microsoftgraph](https://www.codedesignplus.com/blog/ecosistema/15-ms-microsoftgraph/)
-
-> **Note:** To manage secrets and credentials, you must have [Vault](https://www.codedesignplus.com/blog/env-dev/11-install-vault/#parte-1-desplegando-vault-con-helm) deployed.
+Before running the deployment script, you must create a `values.json` file in the root of the project, using the structure of `values.example.json` as a reference. This will allow you to avoid interactive prompts. If any value is missing in `values.json`, the script will prompt you for it during execution.
 
 ## Repository Structure
 
@@ -34,44 +18,91 @@ Each folder corresponds to a microservice or resource and contains:
 - `values-*.yaml` files for Helm values.
 - A `commands.md` file with recommended deployment and management commands.
 
+## Automated Deployment
 
-## Deployment Script `deploy.mjs`
+The main file is `main.mjs`, which scans the `index.mjs` files of each microservice. Each one initializes the deployment, runs the Helm charts, configures secrets in Vault, and prints the result of each operation to the console.
 
-The `deploy.mjs` script updates the YAML files of the microservices by prompting for the required values in the console. 
+### How to Run
 
-### Required Parameters
+To start the deployment, run:
 
-| Parameter Name                      | Description                                                      | Example Value                                                           |
-|-------------------------------------|------------------------------------------------------------------|--------------------------------------------------------------------------|
-| Kubernetes Namespace                | Kubernetes namespace where resources will be deployed             | inventory                                                               |
-| HashiCorp Vault URI                 | Public URL of the Vault server                                    | https://vault.codedesignplus.app                                        |
-| Virtual Service Internal Host       | Internal Vault service URL in the cluster                         | http://vault.vault.svc.cluster.local:8200                               |
-| HashiCorp Vault Token               | Authentication token for Vault                                    | xxxxxxxxxxxxxx                                                          |
-| Solution Name                       | Solution or context name                                          | inventory                                                               |
-| Security Valid Issuer               | Valid issuer for authentication                                   | https://devcodedesignplus.ciamlogin.com/dfee7752-2c8a-4171-ad95-62ddc82d6ed8/v2.0/ |
-| Security Client ID                  | Client ID for authentication                                      | 305f759d-d1d2-467b-9eab-4a61389c7329                                    |
-| Security Valid Audience             | Valid audience for authentication                                 | 305f759d-d1d2-467b-9eab-4a61389c7329                                    |
-| OpenTelemetry Server Address        | OpenTelemetry collector address                                   | http://inventory-opentelemetry-collector.otel-collector.svc.cluster.local:4317 |
-| RabbitMQ Host                       | RabbitMQ host in the cluster                                      | rabbitmq-cluster.srv-rabbitmq.svc                                       |
-| RabbitMQ Username                   | RabbitMQ user                                                    | default_user__xxxxxxxxxxx                                               |
-| RabbitMQ Password                   | RabbitMQ password                                                | lweuHLfTWQxxxxxxxxxxxxxxx                                               |
-| MongoDB Connection String           | MongoDB connection string                                        | mongodb+srv://xxxxxxxxxxx@inventory.sz5fcf7.mongodb.net/?retryWrites=true&w=majority |
-| Redis Connection String             | Redis connection string                                          | <RedisConnectionString>              |
-| Virtual Service Host                | Public host of the Virtual Service                                | services.codedesignplus.app                                             |
-| Virtual Service Gateway             | Istio gateway for the Virtual Service                             | istio-ingress/istio-inventory-gateway                                   |
+```powershell
+npm start
+```
 
-When you run the script, you will be prompted for each of these values in the console.
+If your `values.json` file is complete, the process will be automatic. If any value is missing, you will be prompted for it in the console.
 
+### Example Output
 
-1. **Clone this repository** to your local environment.
-2. **Read the corresponding article** in the blog to understand the context and deployment steps.
-3. **Use the files and commands** for each microservice as instructed in the article.
-4. **Make sure Vault is deployed** and configured for global secrets management.
+```powershell
+PS E:\Repositories\CodeDesignPlus.Resources.DesployBase> npm start
+
+> codedesignplus.resources.desploybase@1.0.0 start
+> node ./main.mjs
+
+==============================
+🚀 Deploying microservice: ms-users
+==============================
+
+🔗 [1] Initializing deployment for ms-users...
+Executing command: helm repo add codedesignplus https://www.codedesignplus.com/helm-charts/
+
+📦 Deploying ms-users REST API...
+Executing command: helm upgrade --install ms-users-rest codedesignplus/ms-users-rest -f ./ms-users/values-rest.yaml --namespace inventory --create-namespace
+
+Executing command: helm repo update
+
+Release "ms-users-rest" has been upgraded. Happy Helming!
+NAME: ms-users-rest
+LAST DEPLOYED: Tue Aug 12 12:26:30 2025
+NAMESPACE: inventory
+STATUS: deployed
+REVISION: 2
+
+📦 Deploying ms-users gRPC API...
+Executing command: helm upgrade --install ms-users-grpc codedesignplus/ms-users-grpc -f ./ms-users/values-grpc.yaml --namespace inventory --create-namespace
+
+Release "ms-users-grpc" has been upgraded. Happy Helming!
+NAME: ms-users-grpc
+LAST DEPLOYED: Tue Aug 12 12:26:31 2025
+NAMESPACE: inventory
+STATUS: deployed
+REVISION: 2
+
+📦 Deploying ms-users Worker...
+Executing command: helm upgrade --install ms-users-worker codedesignplus/ms-users-worker -f ./ms-users/values-worker.yaml --namespace inventory --create-namespace
+
+Release "ms-users-worker" has been upgraded. Happy Helming!
+NAME: ms-users-worker
+LAST DEPLOYED: Tue Aug 12 12:26:32 2025
+NAMESPACE: inventory
+STATUS: deployed
+REVISION: 2
+
+🔐 Configuring Vault for ms-users...
+Executing command: vault kv put -mount=inventory-keyvalue ms-users "RabbitMQ:UserName=default_user__**********" "RabbitMQ:Password=**************" "Redis:Instances:Core:ConnectionString=redis-standa**********************ster.local:6379" "Mongo:ConnectionString=mongodb+srv://**********************z5fcf7.mongodb.net/?retryWrites=true&w=majority"
+
+========== Secret Path ==========
+inventory-keyvalue/data/ms-users
+
+======= Metadata =======
+Key                Value
+---                -----
+created_time       2025-08-12T17:26:34.882938817Z
+custom_metadata    <nil>
+deletion_time      n/a
+destroyed          false
+version            2
+
+... (similar output for each microservice) ...
+```
+
+---
 
 ## Additional Resources
 
-- [Helm Official Documentation](https://helm.sh/docs/)
-- [Vault Official Documentation](https://developer.hashicorp.com/vault/docs)
+- [Helm - Official Documentation](https://helm.sh/docs/)
+- [Vault - Official Documentation](https://developer.hashicorp.com/vault/docs)
 
 ---
 
