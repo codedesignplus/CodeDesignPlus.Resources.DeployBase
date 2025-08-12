@@ -1,17 +1,14 @@
-import promptSync from 'prompt-sync';
 import DeployBase  from '../deploy-base.mjs';
 
-const prompt = promptSync();
-
 export class Deploy extends DeployBase {
-    _name = 'ms-tenants';
+    _name = 'ms-catalogs';
 
     constructor(settings, values) {
         super(settings, values);
     }
 
     async init() {
-        this.initHelm(this._name);
+       this.initHelm(this._name);
     }
 
     async deploy() {

@@ -1,30 +1,72 @@
-import fs from 'fs';
-import yaml from 'js-yaml'
 import promptSync from 'prompt-sync';
 import DeployBase from '../deploy-base.mjs';
 
 const prompt = promptSync();
 
-
-
-
 export class Deploy extends DeployBase {
     _name = 'ms-emails';
 
-    constructor(settings) {
-        super(settings);
+    constructor(settings, values) {
+        super(settings, values);
     }
-
+    
     async init() {
+        this.initHelm(this._name);
+
         this.settings['email'] = {
-            tenantId: prompt("Enter Email Tenant ID:"),
-            clientId: prompt("Enter Email Client ID:"),
-            clientSecret: prompt("Enter Email Client Secret:"),
-            userIdWithLicense: prompt("Enter Email User ID with License:")
+            'Email:TenantId': this.values.email['Email:TenantId'] || prompt("Enter Email Tenant ID: "),
+            'Email:ClientId': this.values.email['Email:ClientId'] || prompt("Enter Email Client ID: "),
+            'Email:ClientSecret': this.values.email['Email:ClientSecret'] || prompt("Enter Email Client Secret: "),
+            'Email:UserIdWithLicense': this.values.email['Email:UserIdWithLicense'] || prompt("Enter Email User ID with License: ")
         }
     }
 
     async deploy() {
-        console.log(`Deploying ${this._name}...`);
+        await this.deployRest();
+        await this.deployGrpc();
+        await this.deployWorker();
+        await this.configVault();
+    }
+
+    async deployRest() {
+        console.log(`📦 Deploying ${this._name} REST API...`);
+
+        const release = `${this._name}-rest`;
+        const chart = `${this._name}-rest`;
+        const pathValues = `./${this._name}/values-rest.yaml`;
+
+        await this.deployHelm(release, chart, pathValues);
+    }
+
+    async deployGrpc() {
+        console.log(`📦 Deploying ${this._name} gRPC API...`);
+
+        const release = `${this._name}-grpc`;
+        const chart = `${this._name}-grpc`;
+        const pathValues = `./${this._name}/values-grpc.yaml`;
+
+        await this.deployHelm(release, chart, pathValues);
+    }
+
+    async deployWorker() {
+        console.log(`📦 Deploying ${this._name} Worker...`);
+
+        const release = `${this._name}-worker`;
+        const chart = `${this._name}-worker`;
+        const pathValues = `./${this._name}/values-worker.yaml`;
+
+        await this.deployHelm(release, chart, pathValues);
+    }
+
+    async configVault() {
+        console.log(`🔐 Configuring Vault for ${this._name}...`);
+
+        const secrets = this.settings.email;
+
+        await this.createVaultSecrets(this._name, secrets);
+    }
+
+    async end() {
+        console.log(`✅ Deployment finished for ${this._name}!\n`);
     }
 }

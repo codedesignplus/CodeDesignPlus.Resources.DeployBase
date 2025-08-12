@@ -6,15 +6,38 @@ const prompt = promptSync();
 export class Deploy extends DeployBase {
     _name = 'ms-roles';
 
-    constructor(settings) {
-        super(settings);
+    constructor(settings, values) {
+        super(settings, values);
     }
 
     async init() {
-        console.log(`Initializing deployment for ${this._name}...`);
+        this.initHelm(this._name);
     }
 
     async deploy() {
-        console.log(`Deploying ${this._name}...`);
+        await this.deployRest();
+        await this.configVault();
+    }
+
+    async deployRest() {
+        console.log(`📦 Deploying ${this._name} REST API...`);
+
+        const release = `${this._name}-rest`;
+        const chart = `${this._name}-rest`;
+        const pathValues = `./${this._name}/values-rest.yaml`;
+
+        await this.deployHelm(release, chart, pathValues);
+    }
+
+    async configVault() {
+        console.log(`🔐 Configuring Vault for ${this._name}...`);
+
+        const secrets = {};
+
+        await this.createVaultSecrets(this._name, secrets);
+    }
+
+    async end() {
+        console.log(`✅ Deployment finished for ${this._name}!\n`);
     }
 }

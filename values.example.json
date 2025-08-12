@@ -1,0 +1,53 @@
+{
+    "namespace": "inventory",
+    "vault": {
+        "server": "https://vault.codedesignplus.app",
+        "internalHost": "http://vault.vault.svc.cluster.local:8200",
+        "token": "ANGq0*B2acD1n5%F",
+        "solution": "inventory"
+    },
+    "env": {
+        "security": {
+            "validIssuer": "https://devcodedesignplus.ciamlogin.com/dfee7752-2c8a-4171-ad95-62ddc82d6ed8/v2.0/",
+            "clientId": "305f759d-d1d2-467b-9eab-4a61389c7329",
+            "clientSecret": "",
+            "validAudience": "305f759d-d1d2-467b-9eab-4a61389c7329"
+        },
+        "otelServer": "http://inventory-opentelemetry-collector.otel-collector.svc.cluster.local:4317"
+    },
+    "rabbitMQ": {
+        "host": "rabbitmq-cluster.srv-rabbitmq.svc",
+        "user": "",
+        "password": ""
+    },
+    "mongo": "mongodb+srv://codedesignplus:DduVYjn12SUd0CfL@inventory.sz5fcf7.mongodb.net/?retryWrites=true&w=majority",
+    "redis": "redis-standalone-headless.srv-redis.svc.cluster.local:6379",
+    "virtualService": {
+        "host": "services.codedesignplus.app",
+        "gateway": "istio-ingress/istio-inventory-gateway"
+    },
+    "email": {
+        "Email:TenantId": "d26654e8-c124-4126-babf-a1f18a83b864",
+        "Email:ClientId": "aa6e541f-ceae-4437-b4f4-12389ee85804",
+        "Email:ClientSecret": "",
+        "Email:UserIdWithLicense": "5df3d979-e29b-4b70-8a69-d2efa79ae6d8"
+    },
+    "fileStorage": {
+        "FileStorage:AzureBlob:AccountName": "codedesignplus",
+        "FileStorage:AzureBlob:AccountKey": ""
+    },
+    "microsoftGraph": {
+        "Graph:ClientId": "4e52651c-1c59-4d91-9817-e57ed0256e9c",
+        "Graph:ClientSecret": "",
+        "Graph:IssuerIdentity": "devcodedesignplus.ciamlogin.com",
+        "Graph:TenantId": "dfee7752-2c8a-4171-ad95-62ddc82d6ed8",
+        "Vault:Transit:SecretContexts:vault_transit_password_temp": "vfGz*%bktADW!9MAs84#8ddLaNQWluxAWmnHm9hXZ@EavJceifLjF5lt14M3%9iq"
+    },
+    "payment": {
+        "Payu:AccountId": "512321",
+        "Payu:ApiKey": "",
+        "Payu:ApiLogin": "pRRXKOl8ikMmt9u",
+        "Payu:MerchantId": "508029",
+        "Payu:SecretKey": ""
+    }
+}
