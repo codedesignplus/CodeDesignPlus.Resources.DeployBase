@@ -10,7 +10,6 @@
         "security": {
             "validIssuer": "https://devcodedesignplus.ciamlogin.com/dfee7752-2c8a-4171-ad95-62ddc82d6ed8/v2.0/",
             "clientId": "305f759d-d1d2-467b-9eab-4a61389c7329",
-            "clientSecret": "",
             "validAudience": "305f759d-d1d2-467b-9eab-4a61389c7329"
         },
         "otelServer": "http://inventory-opentelemetry-collector.otel-collector.svc.cluster.local:4317"

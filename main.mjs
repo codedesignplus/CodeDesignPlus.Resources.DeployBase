@@ -17,7 +17,6 @@ const settings = {
         security: {
             validIssuer: values.env.security.validIssuer || prompt("Enter the Security Valid Issuer: "),
             clientId: values.env.security.clientId || prompt("Enter the Security Client ID: ") || '305f759d-d1d2-467b-9eab-4a61389c7329',
-            clientSecret: values.env.security.clientSecret || prompt("Enter the Security Client Secret: "),
             validAudience: values.env.security.validAudience || prompt("Enter the Security Valid Audience: ")
         },
         otelServer: values.env.otelServer || prompt("Enter the OpenTelemetry Server Address: "),
@@ -35,7 +34,7 @@ const settings = {
     }
 }
 
-const scripts = fs.globSync("ms-emails/index.mjs");
+const scripts = fs.globSync("**/index.mjs");
 
 for (const file of scripts) {
     const modulePath = './' + file.replace(/\\/g, '/');
