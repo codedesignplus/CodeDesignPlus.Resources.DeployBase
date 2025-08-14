@@ -24,7 +24,7 @@ export default class DeployBase {
 
 
     async setSettings() {
-        const files = fs.globSync("**.yaml");
+        const files = fs.globSync(`${this._name}/*.yaml`);
 
         for (const file of files) {
             const data = await Util.updateSettingsYaml(file, this.settings);

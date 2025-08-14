@@ -3,28 +3,27 @@ import yaml from 'js-yaml'
 
 export default class Util {
     static updateEnvironment(data, key, value) {
-        if (!data.env) {
-            data.env = {};
+        if (!data['ms-base'].env) {
+            data['ms-base'].env = {};
         }
-        data.env[key] = value;
+        data['ms-base'].env[key] = value;
     }
 
     static setConfigVault(data, internalHost, token, solution) {
-        if (!data.vault) {
-            data.vault = {};
+        if (!data['ms-base'].vault) {
+            data['ms-base'].vault = {};
         }
-        data.vault.internalHost = internalHost;
-        data.vault.token = token;
-        data.vault.solution = solution;
+        data['ms-base'].vault.server = internalHost;
+        data['ms-base'].vault.token = token;
+        data['ms-base'].vault.solution = solution;
     }
 
-    static setVirtualService(data, host, gateway, namespace) {
-        if (!data.virtualService) {
-            data.virtualService = {};
+    static setVirtualService(data, host, gateway) {
+        if (!data['ms-base'].virtualService) {
+            data['ms-base'].virtualService = {};
         }
-        data.virtualService.host = host;
-        data.virtualService.gateway = gateway;
-        data.virtualService.namespace = namespace;
+        data['ms-base'].virtualService.hosts = [host];
+        data['ms-base'].virtualService.gateways = [gateway];
     }
 
     static async updateSettingsYaml(file, settings) {
@@ -42,7 +41,7 @@ export default class Util {
 
         Util.setConfigVault(data, settings.vault.internalHost, settings.vault.token, settings.vault.solution);
 
-        Util.setVirtualService(data, settings.virtualService.host, settings.virtualService.gateway, settings.namespace);
+        Util.setVirtualService(data, settings.virtualService.host, settings.virtualService.gateway);
 
         return data;
     }
