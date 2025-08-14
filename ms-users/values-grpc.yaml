@@ -17,4 +17,9 @@ ms-base:
   vault:
     server: http://vault.vault.svc.cluster.local:8200
     solution: inventory
-    token: 
+    token: ANGq0*B2acD1n5%F
+  virtualService:
+    hosts:
+    - services.codedesignplus.app
+    gateways:
+    - istio-ingress/istio-gateway
