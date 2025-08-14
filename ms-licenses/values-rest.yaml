@@ -32,7 +32,7 @@ ms-base:
     hosts:
     - services.codedesignplus.app
     gateways:
-    - istio-ingress/istio-inventory-gateway
+    - istio-ingress/istio-gateway
     http:
     - name: ms-licenses
       match:
