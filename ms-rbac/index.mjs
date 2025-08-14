@@ -16,6 +16,7 @@ export class Deploy extends DeployBase {
 
     async deploy() {
         await this.deployRest();
+        await this.deployGrpc();
         await this.configVault();
     }
 
@@ -25,6 +26,16 @@ export class Deploy extends DeployBase {
         const release = `${this._name}-rest`;
         const chart = `${this._name}-rest`;
         const pathValues = `./${this._name}/values-rest.yaml`;
+
+        await this.deployHelm(release, chart, pathValues);
+    }
+
+    async deployGrpc() {
+        console.log(`📦 Deploying ${this._name} gRPC API...`);
+
+        const release = `${this._name}-grpc`;
+        const chart = `${this._name}-grpc`;
+        const pathValues = `./${this._name}/values-grpc.yaml`;
 
         await this.deployHelm(release, chart, pathValues);
     }
